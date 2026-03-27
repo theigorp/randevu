@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum AuthProvider {
+  magic_link
+  google
+  github
+}
+
+model User {
+  id            String   @id @default(uuid()) @db.Uuid
+  email         String?  @unique
+  authProvider  AuthProvider @map("auth_provider")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  preferences    UserPreference?
+  seedPlaces     UserSeedPlace[]
+  preferredAreas UserPreferredArea[]
+  savedPlaces    UserSavedPlace[]
+  sessions       Session[]
+
+  @@map("users")
+}
+
+model UserPreference {
+  id              String  @id @default(uuid()) @db.Uuid
+  userId          String  @unique @map("user_id") @db.Uuid
+  baseCityPlaceId String  @map("base_city_place_id")
+  baseCityName    String  @map("base_city_name")
+  baseCityLat     Float   @map("base_city_lat")
+  baseCityLng     Float   @map("base_city_lng")
+  dietaryPreferences Json? @default("{}") @map("dietary_preferences")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}
+
+model UserSeedPlace {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @map("user_id") @db.Uuid
+  googlePlaceId String   @map("google_place_id")
+  name          String
+  category      String
+  lat           Float
+  lng           Float
+  addedAt       DateTime @default(now()) @map("added_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, googlePlaceId])
+  @@map("user_seed_places")
+}
+
+model UserPreferredArea {
+  id               String @id @default(uuid()) @db.Uuid
+  userId           String @map("user_id") @db.Uuid
+  neighborhoodName String @map("neighborhood_name")
+  bounds           Json
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, neighborhoodName])
+  @@map("user_preferred_areas")
+}
+
+model UserSavedPlace {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @map("user_id") @db.Uuid
+  googlePlaceId String   @map("google_place_id")
+  name          String
+  category      String
+  savedAt       DateTime @default(now()) @map("saved_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, googlePlaceId])
+  @@map("user_saved_places")
+}
+
+model CachedPlace {
+  googlePlaceId   String   @id @map("google_place_id")
+  name            String
+  category        String
+  types           String[]
+  lat             Float
+  lng             Float
+  rating          Float    @default(0)
+  priceLevel      Int      @default(0) @map("price_level")
+  tags            String[]
+  photoReferences String[] @map("photo_references")
+  openingHours    Json?    @map("opening_hours")
+  website         String?
+  phone           String?
+  address         String?
+  editorialSummary String? @map("editorial_summary")
+  fetchedAt       DateTime @default(now()) @map("fetched_at")
+  cityPlaceId     String   @map("city_place_id")
+
+  @@map("cached_places")
+}
+
+model Session {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model MagicLinkToken {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("magic_link_tokens")
+}
