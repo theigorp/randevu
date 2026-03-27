@@ -35,5 +35,12 @@ export default defineNuxtConfig({
     experimental: {
       asyncContext: true,
     },
+    externals: {
+      inline: ['generated/prisma'],
+    },
+  },
+
+  alias: {
+    'generated/prisma': './generated/prisma/client.ts',
   },
 })
