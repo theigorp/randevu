@@ -71,6 +71,8 @@
 </template>
 
 <script setup lang="ts">
+import PlaceList from '~/components/places/PlaceList.vue'
+import DetailDrawer from '~/components/places/DetailDrawer.vue'
 import type { PlaceCategory } from '~/types'
 
 const prefsStore = usePreferencesStore()

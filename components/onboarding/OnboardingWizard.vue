@@ -49,6 +49,10 @@
 </template>
 
 <script setup lang="ts">
+import StepBaseCity from './StepBaseCity.vue'
+import StepSeedPlaces from './StepSeedPlaces.vue'
+import StepDietaryPrefs from './StepDietaryPrefs.vue'
+import StepPreferredAreas from './StepPreferredAreas.vue'
 const step = ref(1)
 const citySelected = ref(false)
 const dietaryRef = ref<{ preferences: Record<string, string> } | null>(null)

@@ -14,7 +14,7 @@
         No photo
       </div>
       <HeartButton
-        class="absolute top-2 right-2"
+        class="absolute top-2 right-2 bg-white/80 backdrop-blur rounded-full p-1.5"
         :google-place-id="place.googlePlaceId"
         :name="place.name"
         :category="place.category"
@@ -51,7 +51,6 @@ import { CATEGORY_COLORS } from '~/types'
 const props = defineProps<{
   place: Place
 }>()
-
 defineEmits<{
   select: [googlePlaceId: string]
 }>()

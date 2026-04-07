@@ -92,7 +92,10 @@ watch(() => props.selectedPlaceId, updateMarkers)
 
 // Watch for center/zoom changes from parent
 watch(() => props.center, (newCenter) => {
-  if (map) map.setView([newCenter.lat, newCenter.lng], map.getZoom())
+  if (!map) return
+  const cur = map.getCenter()
+  if (Math.abs(cur.lat - newCenter.lat) < 1e-6 && Math.abs(cur.lng - newCenter.lng) < 1e-6) return
+  map.setView([newCenter.lat, newCenter.lng], map.getZoom())
 })
 
 // Pan to selected place

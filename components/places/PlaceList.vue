@@ -94,6 +94,8 @@
 </template>
 
 <script setup lang="ts">
+import PlaceCard from './PlaceCard.vue';
+import HeartButton from '../favorites/HeartButton.vue';
 import type { Place } from '~/types'
 
 defineProps<{

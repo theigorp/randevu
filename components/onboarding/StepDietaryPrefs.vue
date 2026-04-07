@@ -16,6 +16,7 @@
 </template>
 
 <script setup lang="ts">
+import ThreeStateToggle from '../ui/ThreeStateToggle.vue'
 import { DIETARY_TAGS, type DietaryPreference } from '~/types'
 
 const prefsStore = usePreferencesStore()

@@ -40,6 +40,7 @@
 </template>
 
 <script setup lang="ts">
+import NeighborhoodChip from '../ui/NeighborhoodChip.vue'
 import type { AutocompleteSuggestion } from '~/server/services/google-places'
 import type { MapBounds } from '~/types'
 
