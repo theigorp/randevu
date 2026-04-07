@@ -65,6 +65,7 @@ export interface PlaceBasic {
   rating: number
   priceLevel: number
   photoUrl: string | null
+  photoReferences: string[]
 }
 
 export interface PlaceDetailed extends PlaceBasic {
@@ -127,6 +128,7 @@ function mapBasicPlace(place: GooglePlaceResult): PlaceBasic {
     rating: place.rating ?? 0,
     priceLevel: mapPriceLevel(place.priceLevel),
     photoUrl,
+    photoReferences: (place.photos ?? []).map((p) => p.name),
   }
 }
 
