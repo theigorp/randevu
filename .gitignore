@@ -24,3 +24,4 @@ logs
 !.env.example
 
 /generated/prisma
+.superpowers/
